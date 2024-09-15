@@ -9,6 +9,8 @@ Quer entender as decisões de design, identificar dependências ou visualizar o 
 
 O SAN-AI é a sua ferramenta ideal. Simplifique sua vida, otimize seus projetos e entregue software de alta qualidade com o SAN-AI."
 
+![SAN](/docs/san-ia-01.gif)
+
 ## Técnicas utillzadas
  - Natural Language Querie
  - Graph RAG 
@@ -30,8 +32,6 @@ O SAN-AI é a sua ferramenta ideal. Simplifique sua vida, otimize seus projetos 
 
 
 ## Rodando o projeto
-
-
 
 To package your application:
 ```
