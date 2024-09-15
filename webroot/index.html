@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>🤖 SAN-AI: Software Architecture Navigation 🤖</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta charset="utf-8">
+
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
+  <link rel="stylesheet" href="./css/bulma.min.css">
+  <script src="./js/markdown-it.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.2.2/dist/mermaid.min.js"></script>
+  <script src="https://unpkg.com/neo4j-graph-viz@0.1.1/dist/neo4j-graph-viz.js"></script>
+
+
+</head>
+<body>
+<div class="container">
+  <div class="hero-body">
+    <p class="title is-2">
+      🤖 SAN-AI: Seu copiloto para arquiteturas de software
+    </p>
+    <p class="title is-2">
+
+    </p>
+  </div>
+</div>
+
+<div class="container">
+
+
+  <div class="content">
+    <article class="message is-dark">
+
+      <div class="field">
+        <!--    <label class="label active">Quantos Databases minha arquitetura tem?</label>-->
+        <!--    <label class="label">Qual o microservico é mais acessado?</label>-->
+        <div class="control">
+          <textarea id="txt_prompt" class="textarea" placeholder="Type your question here"></textarea>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="field is-grouped">
+          <div class="control">
+            <button id="btn_submit" class="button is-link">Enviar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="message-header">
+        <p id="msg_header">🤖 Resposta:</p>
+      </div>
+      <div id="txt_response" class="message-body">
+      </div>
+      <div class="message-footer">
+      </div>
+    </article>
+  </div>
+
+  <div class="content">
+    <br>
+  </div>
+
+  <div id="graph"></div>
+
+</div>
+<script type="module">
+
+
+    let labels = document.querySelectorAll(".label:not(.active)"); // Select all labels except the active one
+
+      labels.forEach(label => {
+        label.addEventListener("click", () => {
+          txtPrompt.value = label.textContent;
+        });
+      });
+
+      labels.forEach(label => {
+        label.addEventListener("click", () => {
+          labels.forEach(l => l.classList.remove("active")); // Remove active class from all labels
+          label.classList.add("active"); // Add active class to the clicked label
+          txtPrompt.value = label.textContent;
+        });
+      });
+
+
+      let btnSubmit = document.querySelector("#btn_submit")
+      let txtPrompt = document.querySelector("#txt_prompt")
+      let txtResponse = document.querySelector("#txt_response")
+
+      let msgHeader = document.querySelector("#msg_header")
+
+      let responseText=""
+
+      btnSubmit.addEventListener("click", async _ => {
+
+        let waitingTimer = setInterval(waitingMessage, 500)
+        let waiting = true
+
+        function waitingMessage() {
+          const d = new Date()
+          msgHeader.innerHTML = "🤖 Answer: 🤔 computing " + d.toLocaleTimeString()
+        }
+
+        responseText=""
+
+        try {
+          const response = await fetch("/prompt", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              question: txtPrompt.value,
+            })
+          })
+
+          const reader = response.body.getReader()
+
+          while (true) {
+            const { done, value } = await reader.read()
+
+            if (waiting) {
+              clearInterval(waitingTimer)
+              waiting = false
+              msgHeader.innerHTML = "🤖 Answer:"
+            }
+
+            if (done) {
+              responseText = responseText + "\n"
+              txtResponse.innerHTML = markdownit().render(responseText)
+              return
+            }
+            // Otherwise do something here to process current chunk
+            const decodedValue = new TextDecoder().decode(value)
+            console.log(decodedValue)
+            responseText = responseText + decodedValue
+            txtResponse.innerHTML = markdownit().render(responseText)
+          }
+
+        } catch(error) {
+          console.log("😡", error)
+        }
+
+      })
+
+
+
+
+</script>
+</body>
+
+</html>
