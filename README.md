@@ -9,11 +9,18 @@ Quer entender as decisões de design, identificar dependências ou visualizar o 
 
 O SAN-AI é a sua ferramenta ideal. Simplifique sua vida, otimize seus projetos e entregue software de alta qualidade com o SAN-AI."
 
-![SAN](/docs/san-ia-01.gif)
+
 
 ## Técnicas utillzadas
- - Natural Language Querie
- - Graph RAG 
+
+### Natural Language Querie
+Natural Language Querie permitem iteragir com bases de dados utilizando linguagem natural, dentro SAN-IA estamos utilizando essa técnica para permitir que o usuário navegue pelos dados do Grafo utilizando linguagem natural
+
+![SAN](/docs/san-ia-01.gif)
+
+### Graph RAG 
+Graph RAG permite aumentar o conhecimento da LLM adicionando dados internos ao conhecimento da LLM, dentro do SAN estamos utilizando Vector Database provido pelo Neo4J para armazenar as documentações arquiteturais da nossa arquitetura
+![SAN](/docs/san-ia-02.gif)
 
 ## Modelos:
 - gpt-3.5-turbo
