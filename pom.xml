@@ -22,7 +22,7 @@
     <main.verticle>br.com.raphaelinacio.MainVerticle</main.verticle>
     <launcher.class>io.vertx.core.Launcher</launcher.class>
 
-    <jackson-databind.version>2.16.1</jackson-databind.version>
+    <jackson-databind.version>2.22.0</jackson-databind.version>
     <langchain4j.version>0.32.0</langchain4j.version>
 
   </properties>
